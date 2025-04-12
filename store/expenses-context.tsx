@@ -1,6 +1,7 @@
+import React, { createContext, useReducer, ReactNode } from 'react';
 import { Expense } from 'types/expensesTypes';
 
-export const DUMMY_EXPENSES: Expense[] = [
+const DUMMY_EXPENSES: Expense[] = [
   { id: 'e1', description: 'Groceries', amount: 42.75, date: new Date('2025-04-01') },
   { id: 'e2', description: 'Coffee', amount: 4.2, date: new Date('2025-04-02') },
   { id: 'e3', description: 'Bus Ticket', amount: 2.5, date: new Date('2025-04-02') },
@@ -42,3 +43,85 @@ export const DUMMY_EXPENSES: Expense[] = [
   { id: 'e39', description: 'Laptop Bag', amount: 45.0, date: new Date('2025-04-16') },
   { id: 'e40', description: 'Breakfast', amount: 8.6, date: new Date('2025-04-16') },
 ];
+
+// ---------- TYPES ----------
+type ExpensesContextType = {
+  expenses: Expense[];
+  addExpense: (expenseData: Omit<Expense, 'id'>) => void;
+  deleteExpense: (id: string) => void;
+  updateExpense: (id: string, expenseData: Omit<Expense, 'id'>) => void;
+};
+
+type ExpensesAction =
+  | { type: 'ADD'; payload: Omit<Expense, 'id'> }
+  | { type: 'DELETE'; payload: { id: string } }
+  | { type: 'UPDATE'; payload: { id: string; data: Omit<Expense, 'id'> } };
+
+type ExpensesProviderProps = {
+  children: ReactNode;
+};
+
+// ---------- REDUCER ----------
+function expensesReducer(state: Expense[], action: ExpensesAction): Expense[] {
+  switch (action.type) {
+    case 'ADD':
+      const newExpense: Expense = {
+        id: Math.random().toString(),
+        ...action.payload,
+      };
+      return [newExpense, ...state];
+
+    case 'DELETE':
+      return state.filter((expense) => expense.id !== action.payload.id);
+
+    case 'UPDATE':
+      return state.map((expense) =>
+        expense.id === action.payload.id
+          ? { ...expense, ...action.payload.data }
+          : expense
+      );
+
+    default:
+      return state;
+  }
+}
+
+// ---------- CONTEXT ----------
+export const ExpensesContext = createContext<ExpensesContextType>({
+  expenses: [],
+  addExpense: () => { },
+  deleteExpense: () => { },
+  updateExpense: () => { },
+});
+
+// ---------- PROVIDER ----------
+const ExpensesContextProvider = ({ children }: ExpensesProviderProps) => {
+  const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+
+  const addExpense = (expenseData: Omit<Expense, 'id'>) => {
+    dispatch({ type: 'ADD', payload: expenseData });
+  };
+
+  const deleteExpense = (id: string) => {
+    dispatch({ type: 'DELETE', payload: { id } });
+  };
+
+  const updateExpense = (id: string, expenseData: Omit<Expense, 'id'>) => {
+    dispatch({ type: 'UPDATE', payload: { id, data: expenseData } });
+  };
+
+  const value: ExpensesContextType = {
+    expenses: expensesState,
+    addExpense,
+    deleteExpense,
+    updateExpense,
+  };
+
+  return (
+    <ExpensesContext.Provider value={value}>
+      {children}
+    </ExpensesContext.Provider>
+  );
+};
+
+export default ExpensesContextProvider;

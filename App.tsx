@@ -1,14 +1,15 @@
+import './global.css';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import './global.css';
 import AllExpenses from 'screens/AllExpenses';
 import RecentExpenses from 'screens/RecentExpenses';
 import ManageExpense from 'screens/ManageExpense';
 import { GlobalStyles } from 'constants/styles';
 import { Ionicons } from '@expo/vector-icons'
 import IconButton from 'components/UI/IconButton';
+import ExpensesContextProvider from 'store/expenses-context';
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
@@ -51,27 +52,29 @@ function ExpensesOverview() {
 export default function App() {
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerTintColor: '#FFFFFF',
-          headerStyle: {
-            backgroundColor: GlobalStyles.colors.primary[600],
-          }
-        }}>
-          <Stack.Screen
-            name="ExpensesOverview"
-            component={ExpensesOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ManageExpense"
-            component={ManageExpense}
-            options={{
-              presentation: 'modal'//IOS
-            }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ExpensesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{
+            headerTintColor: '#FFFFFF',
+            headerStyle: {
+              backgroundColor: GlobalStyles.colors.primary[600],
+            }
+          }}>
+            <Stack.Screen
+              name="ExpensesOverview"
+              component={ExpensesOverview}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ManageExpense"
+              component={ManageExpense}
+              options={{
+                presentation: 'modal'//IOS
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpensesContextProvider>
       <StatusBar style="auto" />
     </>
   );
