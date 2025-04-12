@@ -1,14 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'types/navigationTypes';
-import { useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import IconButton from 'components/UI/IconButton';
 import { GlobalStyles } from 'constants/styles';
 import Button from 'components/UI/Button';
+import { ExpensesContext } from 'store/expenses-context';
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, 'ManageExpense'>;
 
 const ManageExpense = () => {
+    const expensesCtx = useContext(ExpensesContext)
     const route = useRoute<ManageExpenseRouteProp>();
     const navigation = useNavigation();
     const expenseId = route.params?.expenseId
@@ -23,6 +25,7 @@ const ManageExpense = () => {
 
     const expenseDeleteHandler = () => {
         navigation.goBack()
+        expensesCtx.deleteExpense(expenseId)
     }
 
     const cancelHandler = () => {
@@ -30,6 +33,12 @@ const ManageExpense = () => {
     }
 
     const confirmHandler = () => {
+        if (isEditing) {
+            expensesCtx.updateExpense(expenseId, { description: 'Demo Description', amount: 9.99, date: new Date() })
+        } else {
+            expensesCtx.addExpense({ description: 'Demo Description', amount: 9.99, date: new Date() })
+        }
+        navigation.goBack()
 
     }
 

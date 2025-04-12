@@ -75,7 +75,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </ExpensesContextProvider>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
     </>
   );
 }
