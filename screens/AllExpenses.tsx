@@ -1,13 +1,10 @@
 import { Container } from 'components/Container'
+import ExpensesOutput from 'components/ExpensesOutput/ExpensesOutput'
 import { StyleSheet, Text, View } from 'react-native'
 
 const AllExpenses = () => {
     return (
-        <View>
-            <Text>
-                All Expenses
-            </Text>
-        </View>
+        <ExpensesOutput expensesPeriod='TOTAL' />
     )
 }
 

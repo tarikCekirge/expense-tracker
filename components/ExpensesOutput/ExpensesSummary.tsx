@@ -1,12 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
+import { Expense } from 'types/expensesTypes'
 
-
-type Expense = {
-    id: string
-    description: string
-    amount: number
-    date: Date
-}
 
 type Props = {
     periodName: string
@@ -17,9 +11,9 @@ const ExpensesSummary = ({ expenses, periodName }: Props) => {
         return sum + expense.amount
     }, 0)
     return (
-        <View>
-            <Text>{periodName}</Text>
-            <Text>${expensesSum.toFixed(2)}</Text>
+        <View className='p-2 bg-primary-300 flex flex-row rounded-md mb-2 justify-between'>
+            <Text className='text-primary-950 font-bold text-lg'>{periodName}</Text>
+            <Text className='text-primary-950 font-bold text-lg'>${expensesSum.toFixed(2)}</Text>
         </View>
     )
 }

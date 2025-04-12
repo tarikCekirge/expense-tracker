@@ -2,26 +2,20 @@ import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import ExpensesSummary from './ExpensesSummary'
 import ExpensesList from './ExpensesList'
+import { Expense } from 'types/expensesTypes'
+import { DUMMY_EXPENSES } from 'data/dummyData'
 
-
-type Expense = {
-    id: string
-    description: string
-    amount: number
-    date: Date
-}
 
 type Props = {
     expensesPeriod: string
-    expenses: Expense[]
 }
 
 
-const ExpensesOutput = ({ expenses, expensesPeriod }: Props) => {
+const ExpensesOutput = ({ expensesPeriod }: Props) => {
     return (
-        <View>
-            <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
-            <ExpensesList />
+        <View className='p-4 bg-primary-100 flex-1'>
+            <ExpensesSummary expenses={DUMMY_EXPENSES} periodName={expensesPeriod} />
+            <ExpensesList expenses={DUMMY_EXPENSES} />
         </View>
     )
 }

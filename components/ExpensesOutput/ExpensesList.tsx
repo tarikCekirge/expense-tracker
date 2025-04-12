@@ -1,8 +1,18 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, ListRenderItem, StyleSheet, Text, View } from 'react-native'
+import { Expense } from 'types/expensesTypes'
+import ExpenseItem from './ExpenseItem'
 
-const ExpensesList = () => {
+type ExpensesListProps = {
+    expenses: Expense[]
+}
+
+const renderExpenseItem: ListRenderItem<Expense> = ({ item }) => {
+    return <ExpenseItem {...item} />
+}
+
+const ExpensesList = ({ expenses }: ExpensesListProps) => {
     return (
-        <FlatList />
+        <FlatList data={expenses} renderItem={renderExpenseItem} keyExtractor={(item) => item.id} />
     )
 }
 
