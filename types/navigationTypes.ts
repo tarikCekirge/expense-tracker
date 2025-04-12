@@ -1,5 +1,6 @@
 export type RootStackParamList = {
+  ExpensesOverview: undefined;
+  ManageExpense: { expenseId: string };
   AllExpenses: undefined;
-  //   ManageExpense: { expenseId: string };
-  ManageExpense: undefined;
+  RecentExpenses: undefined;
 };

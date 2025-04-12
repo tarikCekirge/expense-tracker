@@ -52,7 +52,12 @@ export default function App() {
   return (
     <>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerTintColor: '#FFFFFF',
+          headerStyle: {
+            backgroundColor: GlobalStyles.colors.primary[600],
+          }
+        }}>
           <Stack.Screen
             name="ExpensesOverview"
             component={ExpensesOverview}
@@ -61,7 +66,9 @@ export default function App() {
           <Stack.Screen
             name="ManageExpense"
             component={ManageExpense}
-            options={{ title: 'Manage Expense' }}
+            options={{
+              presentation: 'modal'//IOS
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

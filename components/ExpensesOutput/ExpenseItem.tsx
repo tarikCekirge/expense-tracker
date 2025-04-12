@@ -6,7 +6,7 @@ import { RootStackParamList } from 'types/navigationTypes'
 
 
 type Props = {
-    id?: string
+    id: string
     description: string
     amount: number
     date: Date
@@ -14,11 +14,11 @@ type Props = {
 
 type NavigationProps = NativeStackNavigationProp<RootStackParamList, 'ManageExpense'>
 
-const ExpenseItem = ({ description, amount, date }: Props) => {
+const ExpenseItem = ({ id, description, amount, date }: Props) => {
     const navigation = useNavigation<NavigationProps>()
 
     const expensePressHandler = () => {
-        navigation.navigate('ManageExpense')
+        navigation.navigate('ManageExpense', { expenseId: id })
     }
 
     return (
