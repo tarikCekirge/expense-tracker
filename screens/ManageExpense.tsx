@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'types/navigationTypes';
 import { useContext, useLayoutEffect } from 'react';
@@ -38,16 +38,22 @@ const ManageExpense = () => {
         navigation.goBack()
     }
 
-    const confirmHandler = (expenseData: ExpenseData) => {
-        if (isEditing && expenseId) {
-            expensesCtx.updateExpense(expenseId, expenseData);
-        } else {
-            storeExpense(expenseData)
-            expensesCtx.addExpense(expenseData);
-        }
+    const confirmHandler = async (expenseData: ExpenseData) => {
+        try {
+            if (isEditing && expenseId) {
+                expensesCtx.updateExpense(expenseId, expenseData);
+            } else {
+                const data = await storeExpense(expenseData);
+                expensesCtx.addExpense({ ...expenseData });
+            }
 
-        navigation.goBack();
+            navigation.goBack();
+        } catch (error) {
+            console.error('Expense saving failed:', error);
+            Alert.alert('Failed to save expense', 'Please try again later.');
+        }
     };
+
 
     return (
         <View className='flex-1 p-4 bg-primary-50'>
