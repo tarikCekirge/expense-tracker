@@ -4,6 +4,7 @@ import { RootStackParamList } from 'types/navigationTypes';
 import { useContext, useLayoutEffect } from 'react';
 import { ExpensesContext } from 'store/expenses-context';
 import ExpenseForm from 'components/ManageExpense/ExpenseForm';
+import { storeExpense } from 'util/http';
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, 'ManageExpense'>;
 
@@ -41,6 +42,7 @@ const ManageExpense = () => {
         if (isEditing && expenseId) {
             expensesCtx.updateExpense(expenseId, expenseData);
         } else {
+            storeExpense(expenseData)
             expensesCtx.addExpense(expenseData);
         }
 
