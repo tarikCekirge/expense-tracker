@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'types/navigationTypes';
 import { useContext, useLayoutEffect } from 'react';
@@ -6,6 +6,7 @@ import IconButton from 'components/UI/IconButton';
 import { GlobalStyles } from 'constants/styles';
 import Button from 'components/UI/Button';
 import { ExpensesContext } from 'store/expenses-context';
+import ExpenseForm from 'components/ManageExpense/ExpenseForm';
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, 'ManageExpense'>;
 
@@ -44,9 +45,10 @@ const ManageExpense = () => {
 
     return (
         <View className='flex-1 p-4 bg-primary-50'>
-            <Text className='flex-1'>
-                {isEditing ? 'Edit Expense Form' : 'Add New Expense Form'} - {expenseId}
-            </Text>
+            <View >
+                {/* <View><Text>{isEditing ? 'Edit Expense Form' : 'Add New Expense Form'} - {expenseId}</Text></View> */}
+                <ExpenseForm />
+            </View>
             <View>
                 <View className='flex flex-row p-2'>
                     <Button className='flex-1' mode='flat' onPress={cancelHandler}>Cancel</Button>
