@@ -1,10 +1,7 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { View } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from 'types/navigationTypes';
 import { useContext, useLayoutEffect } from 'react';
-import IconButton from 'components/UI/IconButton';
-import { GlobalStyles } from 'constants/styles';
-import Button from 'components/UI/Button';
 import { ExpensesContext } from 'store/expenses-context';
 import ExpenseForm from 'components/ManageExpense/ExpenseForm';
 
@@ -23,6 +20,7 @@ const ManageExpense = () => {
     const expenseId = route.params?.expenseId
     const isEditing = !!expenseId;
 
+    const selectedExpense = expensesCtx.expenses.find((expense) => expense.id === expenseId);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -52,7 +50,14 @@ const ManageExpense = () => {
     return (
         <View className='flex-1 p-4 bg-primary-50'>
             <View >
-                <ExpenseForm isEditing={isEditing} submitButtonLabel={isEditing ? 'Update' : 'Add'} onSubmit={confirmHandler} onCancel={cancelHandler} onDelete={expenseDeleteHandler} />
+                <ExpenseForm
+                    defaultValues={selectedExpense}
+                    isEditing={isEditing}
+                    submitButtonLabel={isEditing ? 'Update' : 'Add'}
+                    onSubmit={confirmHandler}
+                    onCancel={cancelHandler}
+                    onDelete={expenseDeleteHandler}
+                />
             </View>
 
         </View>

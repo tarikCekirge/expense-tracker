@@ -4,14 +4,16 @@ import { useState } from 'react'
 import Button from 'components/UI/Button'
 import { GlobalStyles } from 'constants/styles'
 import IconButton from 'components/UI/IconButton'
+import { Expense } from 'types/expensesTypes'
 
 type FormValues = {
-    amount: string
-    date: string
-    description: string
+    amount: string,
+    date: string,
+    description: string,
 }
 
 type Props = {
+    defaultValues?: Expense;
     onCancel: () => void;
     onSubmit: (expenseData: {
         amount: number;
@@ -23,13 +25,16 @@ type Props = {
     isEditing: boolean;
 };
 
-const initialValues: FormValues = {
-    amount: '',
-    date: '',
-    description: '',
-}
 
-const ExpenseForm = ({ onCancel, onSubmit, onDelete, submitButtonLabel, isEditing }: Props) => {
+
+
+const ExpenseForm = ({ defaultValues, onCancel, onSubmit, onDelete, submitButtonLabel, isEditing }: Props) => {
+
+    const initialValues: FormValues = {
+        amount: defaultValues?.amount?.toString() ?? '',
+        date: defaultValues?.date?.toISOString().split('T')[0] ?? '',
+        description: defaultValues?.description ?? '',
+    };
     const [inputValues, setInputValues] = useState<FormValues>(initialValues)
 
     const inputChangedHandler = (
