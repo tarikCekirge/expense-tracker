@@ -10,6 +10,12 @@ import ExpenseForm from 'components/ManageExpense/ExpenseForm';
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, 'ManageExpense'>;
 
+type ExpenseData = {
+    amount: number;
+    date: Date;
+    description: string;
+};
+
 const ManageExpense = () => {
     const expensesCtx = useContext(ExpensesContext)
     const route = useRoute<ManageExpenseRouteProp>();
@@ -33,15 +39,15 @@ const ManageExpense = () => {
         navigation.goBack()
     }
 
-    const confirmHandler = () => {
-        if (isEditing) {
-            expensesCtx.updateExpense(expenseId, { description: 'Demo Description', amount: 9.99, date: new Date() })
+    const confirmHandler = (expenseData: ExpenseData) => {
+        if (isEditing && expenseId) {
+            expensesCtx.updateExpense(expenseId, expenseData);
         } else {
-            expensesCtx.addExpense({ description: 'Demo Description', amount: 9.99, date: new Date() })
+            expensesCtx.addExpense(expenseData);
         }
-        navigation.goBack()
 
-    }
+        navigation.goBack();
+    };
 
     return (
         <View className='flex-1 p-4 bg-primary-50'>

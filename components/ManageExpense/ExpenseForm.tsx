@@ -12,12 +12,16 @@ type FormValues = {
 }
 
 type Props = {
-    onCancel: () => void,
-    onSubmit: () => void,
-    onDelete: () => void
-    submitButtonLabel: string,
-    isEditing: boolean
-}
+    onCancel: () => void;
+    onSubmit: (expenseData: {
+        amount: number;
+        date: Date;
+        description: string;
+    }) => void;
+    onDelete: () => void;
+    submitButtonLabel: string;
+    isEditing: boolean;
+};
 
 const initialValues: FormValues = {
     amount: '',
@@ -39,8 +43,14 @@ const ExpenseForm = ({ onCancel, onSubmit, onDelete, submitButtonLabel, isEditin
     }
 
     const submitHandler = () => {
+        const expenseData = {
+            amount: +inputValues.amount,
+            date: new Date(inputValues.date),
+            description: inputValues.description,
+        };
 
-    }
+        onSubmit(expenseData);
+    };
 
     return (
         <View>
@@ -83,7 +93,7 @@ const ExpenseForm = ({ onCancel, onSubmit, onDelete, submitButtonLabel, isEditin
             <View>
                 <View className='flex flex-row p-2'>
                     <Button className='flex-1' mode='flat' onPress={onCancel}>Cancel</Button>
-                    <Button className='flex-1' onPress={onSubmit}>{submitButtonLabel}</Button>
+                    <Button className='flex-1' onPress={submitHandler}>{submitButtonLabel}</Button>
                 </View>
                 {isEditing && <View style={styles.deleteContainer}><IconButton name='trash' color={GlobalStyles.colors.error[600]} size={24} onPress={onDelete} /></View>}
             </View>
