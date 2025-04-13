@@ -105,6 +105,7 @@ const ExpenseForm = ({ defaultValues, onCancel, onSubmit, onDelete, submitButton
                 <View className="flex-1">
                     <Input
                         label="Amount"
+                        invalid={!inputs.amount.isValid}
                         textInputConfig={{
                             keyboardType: 'decimal-pad',
                             onChangeText: (text) => inputChangedHandler('amount', text),
@@ -115,6 +116,7 @@ const ExpenseForm = ({ defaultValues, onCancel, onSubmit, onDelete, submitButton
                 <View className="flex-1">
                     <Input
                         label="Date"
+                        invalid={!inputs.date.isValid}
                         textInputConfig={{
                             placeholder: 'YYYY-MM-DD',
                             maxLength: 10,
@@ -126,6 +128,7 @@ const ExpenseForm = ({ defaultValues, onCancel, onSubmit, onDelete, submitButton
             </View>
             <Input
                 label="Description"
+                invalid={!inputs.description.isValid}
                 textInputConfig={{
                     multiline: true,
                     autoCorrect: false,
@@ -156,5 +159,5 @@ const styles = StyleSheet.create({
         borderTopWidth: 2,
         borderTopColor: GlobalStyles.colors.primary[600],
         alignItems: 'center'
-    },
+    }
 });
