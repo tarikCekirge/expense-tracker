@@ -46,15 +46,7 @@ const ManageExpense = () => {
     return (
         <View className='flex-1 p-4 bg-primary-50'>
             <View >
-                {/* <View><Text>{isEditing ? 'Edit Expense Form' : 'Add New Expense Form'} - {expenseId}</Text></View> */}
-                <ExpenseForm />
-            </View>
-            <View>
-                <View className='flex flex-row p-2'>
-                    <Button className='flex-1' mode='flat' onPress={cancelHandler}>Cancel</Button>
-                    <Button className='flex-1' onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>
-                </View>
-                {isEditing && <View style={styles.deleteContainer}><IconButton name='trash' color={GlobalStyles.colors.error[600]} size={24} onPress={expenseDeleteHandler} /></View>}
+                <ExpenseForm isEditing={isEditing} submitButtonLabel={isEditing ? 'Update' : 'Add'} onSubmit={confirmHandler} onCancel={cancelHandler} onDelete={expenseDeleteHandler} />
             </View>
 
         </View>
@@ -63,12 +55,3 @@ const ManageExpense = () => {
 
 export default ManageExpense;
 
-const styles = StyleSheet.create({
-    deleteContainer: {
-        marginTop: 16,
-        paddingTop: 8,
-        borderTopWidth: 2,
-        borderTopColor: GlobalStyles.colors.primary[600],
-        alignItems: 'center'
-    },
-});
