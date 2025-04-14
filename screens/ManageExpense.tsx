@@ -6,6 +6,7 @@ import { ExpensesContext } from 'store/expenses-context';
 import ExpenseForm from 'components/ManageExpense/ExpenseForm';
 import { deleteExpense, storeExpense, updateExpense } from 'util/http';
 import LoadingOverlay from 'components/UI/LoadingOverlay';
+import ErrorOverlay from 'components/UI/ErrorOverlay';
 
 type ManageExpenseRouteProp = RouteProp<RootStackParamList, 'ManageExpense'>;
 
@@ -17,6 +18,8 @@ type ExpenseData = {
 
 const ManageExpense = () => {
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [error, setError] = useState<string | null>(null);
+
     const expensesCtx = useContext(ExpensesContext)
     const route = useRoute<ManageExpenseRouteProp>();
     const navigation = useNavigation();
@@ -33,10 +36,18 @@ const ManageExpense = () => {
 
     const expenseDeleteHandler = async () => {
         setIsSubmitting(true)
-        await deleteExpense(expenseId)
-        setIsSubmitting(false)
-        navigation.goBack()
-        expensesCtx.deleteExpense(expenseId)
+
+        try {
+            await deleteExpense(expenseId)
+            navigation.goBack()
+            expensesCtx.deleteExpense(expenseId)
+        } catch (error) {
+            setError('Could not delete expense please try again!')
+            setIsSubmitting(false)
+        }
+
+
+
     }
 
     const cancelHandler = () => {
@@ -59,6 +70,14 @@ const ManageExpense = () => {
             Alert.alert('Failed to save expense', 'Please try again later.');
         }
     };
+
+    const errorHandler = () => {
+        setError(null)
+    }
+
+    if (error && !isSubmitting) {
+        return <ErrorOverlay message={error} onConfirm={errorHandler} />
+    }
 
 
     if (isSubmitting) {
