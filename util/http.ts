@@ -7,10 +7,13 @@ export const storeExpense = async (  expenseData: Omit<Expense, 'id'> ): Promise
       `${API_URL}/expenses.json`,
       expenseData
     );
-    return response.data.name;  
+
+    const id  = response.data.name
+    return id;  
   };
 
   export const fetchExpenses = async (): Promise<Expense[]> => {
+
     const response = await axios.get<{ [key: string]: Omit<Expense, 'id'> }>(
       `${API_URL}/expenses.json`
     );
@@ -23,3 +26,13 @@ export const storeExpense = async (  expenseData: Omit<Expense, 'id'> ): Promise
     return expenses;
   };
   
+
+  export const updateExpense = async ( id: string,  expenseData: Omit<Expense, 'id'> ): Promise<Expense> => {
+    await axios.put(`${API_URL}/expenses/${id}.json`, expenseData);
+    return { id, ...expenseData };
+  };
+  
+
+  export const deleteExpense = async (id: string): Promise<void> => {
+    await axios.delete(`${API_URL}/expenses/${id}.json`);
+  };

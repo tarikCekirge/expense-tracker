@@ -4,14 +4,14 @@ import { Expense } from 'types/expensesTypes';
 // ---------- TYPES ----------
 type ExpensesContextType = {
   expenses: Expense[];
-  addExpense: (expenseData: Omit<Expense, 'id'>) => void;
+  addExpense: (expenseData: Expense) => void;
   setExpenses: (expenses: Expense[]) => void;
   deleteExpense: (id: string) => void;
   updateExpense: (id: string, expenseData: Omit<Expense, 'id'>) => void;
 };
 
 type ExpensesAction =
-  | { type: 'ADD'; payload: Omit<Expense, 'id'> }
+  | { type: 'ADD'; payload: Expense }
   | { type: 'SET'; payload: Expense[] }
   | { type: 'DELETE'; payload: { id: string } }
   | { type: 'UPDATE'; payload: { id: string; data: Omit<Expense, 'id'> } };
@@ -24,13 +24,11 @@ type ExpensesProviderProps = {
 function expensesReducer(state: Expense[], action: ExpensesAction): Expense[] {
   switch (action.type) {
     case 'ADD':
-      const newExpense: Expense = {
-        id: Math.random().toString(),
-        ...action.payload,
-      };
-      return [newExpense, ...state];
+
+      return [action.payload, ...state];
     case 'SET':
-      return action.payload;
+      const inverted = action.payload.reverse()
+      return inverted;
     case 'DELETE':
       return state.filter((expense) => expense.id !== action.payload.id);
     case 'UPDATE':
@@ -57,7 +55,7 @@ export const ExpensesContext = createContext<ExpensesContextType>({
 const ExpensesContextProvider = ({ children }: ExpensesProviderProps) => {
   const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
-  const addExpense = (expenseData: Omit<Expense, 'id'>) => {
+  const addExpense = (expenseData: Expense) => {
     dispatch({ type: 'ADD', payload: expenseData });
   };
 
